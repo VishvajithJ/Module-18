@@ -32,10 +32,49 @@ To write a Python program to find the shortest possible route that visits every 
 
 ## Program
 ```
+from itertools import permutations
+
+def tsp(graph, start=0):
+    n = len(graph)
+    vertices = list(range(n))
+    vertices.remove(start)
+    min_cost = float('inf')
+    best_path = []
+
+    for perm in permutations(vertices):
+        cost = 0
+        k = start
+        for j in perm:
+            cost += graph[k][j]
+            k = j
+        cost += graph[k][start]  # return to start
+
+        if cost < min_cost:
+            min_cost = cost
+            best_path = [start] + list(perm) + [start]
+
+    return min_cost, best_path
+
+# Example graph (distance matrix)
+graph = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+min_cost, path = tsp(graph)
+print("Minimum cost:", min_cost)
+print("Path:", path)
 
 ```
 
 ## OUTPUT
 
+![image](https://github.com/user-attachments/assets/5072e4fb-3613-42b0-84cb-3aa3750c5cc8)
+
 
 ## RESULT
+The program successfully finds the shortest possible route that visits all cities exactly once and returns to the starting city, along with the minimum travel cost.
+
+
